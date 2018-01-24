@@ -39,7 +39,7 @@ GS::IndexBuffer::IndexBuffer(const uint32_t* buff, size_t len)
  : m_raw(nullptr) {
 	m_numIndices = len;
 	obs_enter_graphics();
-	m_indexBuffer = gs_indexbuffer_create(gs_index_type::GS_UNSIGNED_LONG, (void*)buff, len, 0);
+	m_indexBuffer = gs_indexbuffer_create(gs_index_type::GS_UNSIGNED_LONG, (void*)buff, len, GS_DYNAMIC);
 	obs_leave_graphics();
 }
 

@@ -51,7 +51,7 @@ GS::VertexBuffer::VertexBuffer(uint8_t* raw)
 	
 	// create the gs vertex buffer
 	obs_enter_graphics();
-	m_vertexbuffer = gs_vertexbuffer_create(vbdata, 0);
+	m_vertexbuffer = gs_vertexbuffer_create(vbdata, GS_DYNAMIC);
 	obs_leave_graphics();
 } 
 
@@ -86,7 +86,7 @@ GS::VertexBuffer::VertexBuffer(const std::vector<GS::Vertex>& verts)
 
 	// create the gs vertex buffer
 	obs_enter_graphics();
-	m_vertexbuffer = gs_vertexbuffer_create(m_vb_data, 0);
+	m_vertexbuffer = gs_vertexbuffer_create(m_vb_data, GS_DYNAMIC);
 	obs_leave_graphics();
 }
 
