@@ -2,49 +2,17 @@ cmake_minimum_required(VERSION 2.8.12)
 PROJECT(facemask-plugin)
 math(EXPR BITS "8*${CMAKE_SIZEOF_VOID_P}")
 
+if(APPLE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif()
+
+
 ################################################################################
 # Configuration
 ################################################################################
 
-# dlib
-SET(PATH_DLIB "" CACHE PATH "Dlib Machine Learning C++ Toolkit Source Code Directory")
-if(PATH_DLIB STREQUAL "")
-	message(FATAL_ERROR "PATH_DLIB not set!")
-	return()
-endif()
-if(NOT EXISTS "${PATH_DLIB}/dlib/image_processing/object_detector.h")
-	message(FATAL_ERROR "PATH_DLIB is invalid!")
-	return()
-endif()
-
-include(${PATH_DLIB}/dlib/cmake)
-include_directories(${PATH_DLIB})
-
-# OpenCV
-SET(OpenCV_DIR "${PROJECT_SOURCE_DIR}/thirdparty/opencv")
-SET(OpenCV_VERSION "331" CACHE STRING "Version of OpenCV to use.")
-SET(OpenCV_LIBS
-	debug "${OpenCV_DIR}/lib/Debug/opencv_calib3d${OpenCV_VERSION}d.lib"
-	optimized "${OpenCV_DIR}/lib/Release/opencv_calib3d${OpenCV_VERSION}.lib"
-	debug "${OpenCV_DIR}/lib/Debug/opencv_core${OpenCV_VERSION}d.lib"
-	optimized "${OpenCV_DIR}/lib/Release/opencv_core${OpenCV_VERSION}.lib"
-	debug "${OpenCV_DIR}/lib/Debug/opencv_highgui${OpenCV_VERSION}d.lib"
-	optimized "${OpenCV_DIR}/lib/Release/opencv_highgui${OpenCV_VERSION}.lib"
-	debug "${OpenCV_DIR}/lib/Debug/opencv_imgcodecs${OpenCV_VERSION}d.lib"
-	optimized "${OpenCV_DIR}/lib/Release/opencv_imgcodecs${OpenCV_VERSION}.lib"
-	debug "${OpenCV_DIR}/lib/Debug/opencv_imgproc${OpenCV_VERSION}d.lib"
-	optimized "${OpenCV_DIR}/lib/Release/opencv_imgproc${OpenCV_VERSION}.lib"
-	debug "${OpenCV_DIR}/3rdparty/lib/Debug/zlibd.lib"
-	optimized "${OpenCV_DIR}/3rdparty/lib/Release/zlib.lib"
-	debug "${OpenCV_DIR}/3rdparty/lib/Debug/ittnotifyd.lib"
-	optimized "${OpenCV_DIR}/3rdparty/lib/Release/ittnotify.lib"
-	debug "${OpenCV_DIR}/3rdparty/lib/Debug/ippiwd.lib"
-	optimized "${OpenCV_DIR}/3rdparty/lib/Release/ippiw.lib"
-	debug "${OpenCV_DIR}/3rdparty/ippicv/ippicv_win_${OpenCV_VERSION}/lib/intel64/ippicvmt.lib"
-	optimized "${OpenCV_DIR}/3rdparty/ippicv/ippicv_win_${OpenCV_VERSION}/lib/intel64/ippicvmt.lib"
-)
-include_directories("${OpenCV_DIR}/include")
-include_directories("${OpenCV_DIR}/3rdparty/include")
+FIND_PACKAGE(dlib REQUIRED)
+FIND_PACKAGE(OpenCV REQUIRED)
 
 # smll
 include_directories("smll")
@@ -265,8 +233,10 @@ add_custom_command(TARGET facemask-plugin POST_BUILD
 	"$<TARGET_FILE:facemask-plugin>"
 	"${DISTRIBUTE_PATH}/$<CONFIG>/${DISTRIBUTE_PATH_BIN}/$<TARGET_FILE_NAME:facemask-plugin>"
 )
+IF (WIN32)
 add_custom_command(TARGET facemask-plugin POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy
 	"$<TARGET_FILE_DIR:facemask-plugin>/facemask-plugin.pdb"
 	"${DISTRIBUTE_PATH}/$<CONFIG>/${DISTRIBUTE_PATH_BIN}/facemask-plugin.pdb"
 )
+ENDIF()

@@ -18,9 +18,11 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
-#include "Config.hpp"
 
+// Put this before apple code to prevent an enum error
 #include <opencv2/opencv.hpp>
+
+#include "Config.hpp"
 
 namespace smll {
 

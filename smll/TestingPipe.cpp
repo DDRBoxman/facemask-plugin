@@ -26,7 +26,7 @@ namespace smll {
 	static TestingPipe g_testingPipe;
 
 	TestingPipe::TestingPipe() 
-		: hPipe(INVALID_HANDLE_VALUE)
+		//: hPipe(INVALID_HANDLE_VALUE)
 	{
 	}
 
@@ -37,7 +37,7 @@ namespace smll {
 
 	void TestingPipe::OpenPipe()
 	{
-		if (Config::singleton().get_bool(CONFIG_BOOL_IN_TEST_MODE) &&
+		/*if (Config::singleton().get_bool(CONFIG_BOOL_IN_TEST_MODE) &&
 			hPipe == INVALID_HANDLE_VALUE)
 		{
 			hPipe = CreateFile(TEXT("\\\\.\\pipe\\SlobsTestPipe"),
@@ -47,17 +47,17 @@ namespace smll {
 				OPEN_EXISTING,
 				FILE_FLAG_WRITE_THROUGH | FILE_FLAG_NO_BUFFERING,
 				NULL);
-		} 
+		} */
 	}
 
 	void TestingPipe::ClosePipe()
 	{
-		if (hPipe != INVALID_HANDLE_VALUE)
+		/*if (hPipe != INVALID_HANDLE_VALUE)
 		{
 			SendString("Shutting down test server");
 			CloseHandle(hPipe);
 			hPipe = INVALID_HANDLE_VALUE;
-		}
+		}*/
 	}
 
 	TestingPipe& TestingPipe::singleton()
@@ -67,7 +67,7 @@ namespace smll {
 
 	int TestingPipe::SendString(const std::string s)
 	{
-		OpenPipe();
+		/*OpenPipe();
 
 		DWORD dwWritten = 0;
 		if (hPipe != INVALID_HANDLE_VALUE)
@@ -77,7 +77,8 @@ namespace smll {
 			FlushFileBuffers(hPipe);
 		}
 
-		return (int)dwWritten;
+		return (int)dwWritten;*/
+		return 0;
 	}
 
 }

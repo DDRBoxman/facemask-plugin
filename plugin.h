@@ -19,8 +19,9 @@
 
 #pragma once
 #include "version.h"
-#include <stdint.h>
-#include <inttypes.h>
+#include <cstdint>
+#include <cinttypes>
+#include <cmath>
 #include <libobs/util/base.h>
 
  // Plugin

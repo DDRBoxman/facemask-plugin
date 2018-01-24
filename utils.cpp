@@ -17,18 +17,19 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
-#pragma once
+
 #include "utils.h"
-#include <Windows.h>
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iterator>
 #include "base64.h"
-
+#include <unistd.h>
+#include <glob.h>
 
 namespace Utils {
 
+#ifdef WIN32
 	const char* GetTempPath() {
 		static TCHAR tbuff[256];
 		::GetTempPath(256, tbuff);
@@ -37,8 +38,8 @@ namespace Utils {
 		wcstombs(buff, (wchar_t*)tbuff, wcslen((wchar_t*)tbuff) + 1);
 #else
 		char* buff = tbuff;
-#endif
 		return buff;
+#endif
 	}
 
 	const char* GetTempFileName() {
@@ -65,10 +66,6 @@ namespace Utils {
 		return fn;
 	}
 
-	void DeleteTempFile(std::string filename) {
-		::DeleteFile(filename.c_str());
-	}
-
 	std::vector<std::string> ListFolder(std::string path, std::string glob) {
 		std::vector<std::string> r;
 
@@ -87,6 +84,40 @@ namespace Utils {
 
 		//Close the handle after use or memory/resource leak
 		FindClose(handle);
+		return r;
+	}
+#else
+	const char* Base64ToTempFile(std::string base64String) {
+		std::vector<uint8_t> decoded;
+		base64_decodeZ(base64String, decoded);
+		char filename[] = "/tmp/facemasktmp.XXXXXX";
+		int fd = mkstemp(filename);
+		write(fd, (char*)decoded.data(), decoded.size());
+		close(fd);
+		return std::string(filename).c_str();
+	}
+#endif
+
+	void DeleteTempFile(std::string filename) {
+#ifdef WIN32
+		::DeleteFile(filename.c_str());
+#else
+		unlink(filename.c_str());
+#endif
+	}
+
+
+
+	std::vector<std::string> ListFolder(std::string path, std::string globString) {
+		std::vector<std::string> r;
+
+		const char *ss = (path + "/" + globString).c_str();
+
+		glob_t glob_result;
+		glob(ss ,GLOB_TILDE, NULL, &glob_result);
+		for(unsigned int i=0; i<glob_result.gl_pathc; ++i){
+			r.emplace_back(std::string(glob_result.gl_pathv[i]));
+		}
 		return r;
 	}
 

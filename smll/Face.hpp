@@ -21,6 +21,9 @@
 #ifndef __SMLL_FACE_HPP__
 #define __SMLL_FACE_HPP__
 
+// Put this before apple code to prevent an enum error
+#include <opencv2/opencv.hpp>
+
 #include <stdexcept>
 
 #pragma warning( push )
@@ -32,7 +35,6 @@
 #pragma warning( disable: 4505 )
 #pragma warning( disable: 4267 )
 #include <dlib/image_processing.h>
-#include <opencv2/opencv.hpp>
 #pragma warning( pop )
 
 #include "landmarks.hpp"

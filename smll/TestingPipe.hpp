@@ -20,7 +20,6 @@
 */
 #pragma once
 
-#include <windows.h>
 #include <string>
 
 namespace smll {
@@ -38,7 +37,7 @@ namespace smll {
 
 	private:
 
-		HANDLE hPipe;
+		//HANDLE hPipe;
 
 		void OpenPipe();
 	};

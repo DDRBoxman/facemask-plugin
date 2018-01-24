@@ -27,6 +27,8 @@ extern "C" {
 }
 
 namespace GS {
+	class RenderTargetOp;
+
 	class RenderTarget {
 		friend class RenderTargetOp;
 
@@ -43,14 +45,14 @@ namespace GS {
 	};
 
 	class RenderTargetOp {
-		public:
+	public:
 		RenderTargetOp(GS::RenderTarget* rt, uint32_t width, uint32_t height);
 		virtual ~RenderTargetOp();
 
 		RenderTargetOp(const GS::RenderTargetOp& r) = delete;
 		RenderTargetOp& operator=(const GS::RenderTargetOp&) = delete;
 
-		protected:
+	protected:
 		GS::RenderTarget* m_renderTarget;
 	};
 }

@@ -118,7 +118,7 @@ namespace smll {
 			double dt, const dlib::matrix<T, N, N>& _A) {
 
 			this->A = _A;
-			this->dt = _dt;
+			this->dt = dt;
 			update(y);
 		}
 

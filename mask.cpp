@@ -25,6 +25,8 @@
 #include "strings.h"
 #include "plugin.h"
 #include <queue>
+#include <fstream>
+
 extern "C" {
 	#pragma warning( push )
 	#pragma warning( disable: 4201 )
